@@ -113,9 +113,9 @@ def assessment_etl(assessment_csv = "./data/assessments.csv",
     del df_asm['COUNTYLAND']
     del df_asm['COUNTYTOTAL']
     
-    df_ohc = one_hot_columns(df_asm[for c in df_pad[df_pad.handle == 'oh'].FieldName])
-    df_dat = date_columns(df_asm[for c in df_pad[df_pad.handle == 'date'].FieldName])
-    df_num = numerical_columns(df_asm[for c in df_pad[df_pad.handle == 'num'].FieldName if c in df_asm])
+    df_ohc = one_hot_columns(df_asm[[c for c in df_pad[df_pad.handle == 'oh'].FieldName]])
+    df_dat = date_columns(df_asm[[c for c in df_pad[df_pad.handle == 'date'].FieldName]])
+    df_num = numerical_columns(df_asm[[c for c in df_pad[df_pad.handle == 'num'].FieldName if c in df_asm]])
     df_bin = pd.DataFrame({'HOMESTEADFLAG_B': np.where(df_asm.HOMESTEADFLAG.isna(), -1, 1)})
 
     df_dat = pd.concat([df_num, df_dat, df_ohc, df_bin], axis = 1)
@@ -155,7 +155,7 @@ def date_columns(df_dat):
         dd[c + '_D'] = n_range(d)
     return pd.DataFrame(dd)
     
-def numerical_colums(df_num):
+def numerical_columns(df_num):
     """
     Rescale and remap nan for numerical columns.
     :param df_num: Numerical assessment data.
